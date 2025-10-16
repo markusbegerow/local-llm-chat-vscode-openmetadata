@@ -1,0 +1,170 @@
+{
+  "name": "local-llm-chat-vscode-openmetadata",
+  "displayName": "Local LLM for OpenMetadata",
+  "description": "Chat with OpenMetadata using local LLMs (OpenAI, Ollama, or custom endpoints)",
+  "version": "1.0.0",
+  "publisher": "MarkusBegerow",
+  "icon": "assets/openmetadata.png",
+  "author": {
+	  "name": "Markus Begerow"
+  },
+  "contributors": [
+	  "Markus Begerow"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markusbegerow/local-llm-chat-vscode-openmetadata.git"
+  },
+  "homepage": "https://github.com/markusbegerow/local-llm-chat-vscode-openmetadata#readme",
+  "bugs": { "url": "https://github.com/markusbegerow/local-llm-chat-vscode-openmetadata/issues" },
+  "sponsor": {
+	  "url": "https://github.com/sponsors/markusbegerow"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Extension Packs",
+    "Other",
+    "AI",
+    "Chat",
+    "Visualization"
+  ],
+  "keywords": [
+    "openmetadata",
+    "data-catalog",
+    "lineage",
+    "ai",
+    "data-discovery",
+    "llm",
+    "openai",
+    "ollama",
+    "local-llm",
+    "chat"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "openmetadataPanel",
+          "title": "OPEN METADATA",
+          "icon": "$(database)"
+        }
+      ]
+    },
+    "views": {
+      "openmetadataPanel": [
+        {
+          "id": "openmetadataExplorer",
+          "name": "Explorer",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Local LLM Chat for OpenMetadata",
+      "properties": {
+        "openmetadataExplorer.openmetadataUrl": {
+          "type": "string",
+          "default": "http://localhost:8585",
+          "description": "OpenMetadata server URL"
+        },
+        "openmetadataExplorer.openmetadataAuthToken": {
+          "type": "string",
+          "description": "OpenMetadata authentication token (leave empty if auth is disabled)",
+          "default": ""
+        },
+        "openmetadataExplorer.llm.provider": {
+          "type": "string",
+          "enum": ["openai", "ollama", "custom"],
+          "default": "openai",
+          "description": "LLM provider to use (openai, ollama, or custom)"
+        },
+        "openmetadataExplorer.llm.openai.apiKey": {
+          "type": "string",
+          "description": "OpenAI API key (get from https://platform.openai.com/api-keys)",
+          "default": ""
+        },
+        "openmetadataExplorer.llm.openai.model": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "OpenAI model to use (gpt-4o, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini)"
+        },
+        "openmetadataExplorer.llm.openai.baseUrl": {
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "description": "OpenAI API base URL (change for Azure OpenAI or compatible APIs)"
+        },
+        "openmetadataExplorer.llm.ollama.endpoint": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Ollama API endpoint"
+        },
+        "openmetadataExplorer.llm.ollama.model": {
+          "type": "string",
+          "default": "llama2",
+          "description": "Ollama model name (llama2, mistral, codellama, etc.)"
+        },
+        "openmetadataExplorer.llm.custom.endpoint": {
+          "type": "string",
+          "description": "Custom LLM API endpoint (OpenAI-compatible format)",
+          "default": ""
+        },
+        "openmetadataExplorer.llm.custom.apiKey": {
+          "type": "string",
+          "description": "API key for custom endpoint (if required)",
+          "default": ""
+        },
+        "openmetadataExplorer.llm.custom.model": {
+          "type": "string",
+          "description": "Model name for custom endpoint",
+          "default": ""
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "openmetadataExplorer.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "package": "npm run compile && npx @vscode/vsce package",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "16.x",
+    "@types/react": "^18.3.26",
+    "@types/vscode": "^1.74.0",
+    "@types/ws": "^8.18.1",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "css-loader": "^6.11.0",
+    "eslint": "^8.28.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "^4.9.4",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "@types/react-dom": "^18.0.10",
+    "axios": "^1.12.2",
+    "elkjs": "^0.10.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "reactflow": "^11.11.4"
+  }
+}
