@@ -2,6 +2,8 @@
 
 A VS Code extension that brings AI-powered data discovery to your IDE using **your choice** of LLM provider. Chat with your OpenMetadata catalog using OpenAI, Ollama, or any custom endpoint.
 
+<img alt="vs-code-openmetadata" src="https://github.com/user-attachments/assets/c148a450-c985-4b5c-95fb-a48fb143bb47" />
+
 ## Key Features
 
 - **Multiple LLM Providers**: Choose between OpenAI, Ollama, or custom OpenAI-compatible endpoints
