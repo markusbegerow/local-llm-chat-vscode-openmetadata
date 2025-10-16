@@ -1,4 +1,4 @@
-# Local LLM Chat for OpenMetadata
+# Local LLM for OpenMetadata
 
 A VS Code extension that brings AI-powered data discovery to your IDE using **your choice** of LLM provider. Chat with your OpenMetadata catalog using OpenAI, Ollama, or any custom endpoint.
 
