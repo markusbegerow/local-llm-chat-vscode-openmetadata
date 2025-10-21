@@ -148,6 +148,14 @@ export class OpenMetadataService {
             });
 
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`OpenMetadata search failed: ${response.status} ${response.statusText}`, errorText);
+
+                // If 401, provide helpful error
+                if (response.status === 401) {
+                    throw new Error('OpenMetadata authentication failed. Please configure your authentication token in VS Code settings (OpenMetadata Auth Token).');
+                }
+
                 // If search fails, try to get all tables and filter locally
                 console.log('Search API failed, trying to get all tables...');
                 return await this.getAllTablesFiltered(query);
@@ -205,6 +213,9 @@ export class OpenMetadataService {
             });
 
             if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('OpenMetadata authentication failed. Please configure your authentication token in VS Code settings (OpenMetadata Auth Token).');
+                }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
@@ -256,6 +267,9 @@ export class OpenMetadataService {
             });
 
             if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('OpenMetadata authentication failed. Please configure your authentication token in VS Code settings (OpenMetadata Auth Token).');
+                }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 

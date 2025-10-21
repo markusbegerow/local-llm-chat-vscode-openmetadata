@@ -2,7 +2,7 @@
   "name": "local-llm-chat-vscode-openmetadata",
   "displayName": "Local LLM for OpenMetadata",
   "description": "Chat with OpenMetadata using local LLMs (OpenAI, Ollama, or custom endpoints)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "MarkusBegerow",
   "icon": "assets/openmetadata.png",
   "author": {
@@ -72,58 +72,71 @@
         "openmetadataExplorer.openmetadataUrl": {
           "type": "string",
           "default": "http://localhost:8585",
-          "description": "OpenMetadata server URL"
+          "description": "OpenMetadata server URL",
+          "order": 1
         },
         "openmetadataExplorer.openmetadataAuthToken": {
           "type": "string",
           "description": "OpenMetadata authentication token (leave empty if auth is disabled)",
-          "default": ""
+          "default": "",
+          "order": 2
         },
-        "openmetadataExplorer.llm.provider": {
+        "openmetadataExplorer.llm.apiUrl": {
           "type": "string",
-          "enum": ["openai", "ollama", "custom"],
-          "default": "openai",
-          "description": "LLM provider to use (openai, ollama, or custom)"
+          "default": "http://localhost:11434/v1/chat/completions",
+          "markdownDescription": "Full API endpoint URL.\n\n**Examples:**\n- OpenAI: `https://api.openai.com/v1/chat/completions`\n- Ollama: `http://localhost:11434/v1/chat/completions`\n- Custom: `http://localhost:1234/v1/chat/completions`",
+          "order": 3
         },
-        "openmetadataExplorer.llm.openai.apiKey": {
+        "openmetadataExplorer.llm.token": {
           "type": "string",
-          "description": "OpenAI API key (get from https://platform.openai.com/api-keys)",
-          "default": ""
+          "default": "ollama",
+          "markdownDescription": "API authentication token.\n\n**Examples:**\n- OpenAI: `sk-your-openai-api-key-here`\n- Ollama: `ollama` (or any dummy value)\n- Custom: `your-token-or-dummy-value`",
+          "order": 4
         },
-        "openmetadataExplorer.llm.openai.model": {
+        "openmetadataExplorer.llm.model": {
           "type": "string",
-          "default": "gpt-4o",
-          "description": "OpenAI model to use (gpt-4o, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini)"
+          "default": "llama3.2",
+          "markdownDescription": "Model name to use.\n\n**Examples:**\n- OpenAI: `gpt-4`, `gpt-3.5-turbo`, `gpt-4-turbo`\n- Ollama: `llama3.2`, `mistral`, `codellama`\n- Custom: `your-model-name`",
+          "order": 5
         },
-        "openmetadataExplorer.llm.openai.baseUrl": {
-          "type": "string",
-          "default": "https://api.openai.com/v1",
-          "description": "OpenAI API base URL (change for Azure OpenAI or compatible APIs)"
+        "openmetadataExplorer.llm.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0.0,
+          "maximum": 2.0,
+          "markdownDescription": "Sampling temperature for model responses.\n- `0.0` = deterministic\n- `2.0` = very random",
+          "order": 6
         },
-        "openmetadataExplorer.llm.ollama.endpoint": {
-          "type": "string",
-          "default": "http://localhost:11434",
-          "description": "Ollama API endpoint"
+        "openmetadataExplorer.llm.maxTokens": {
+          "type": "number",
+          "default": 2048,
+          "minimum": 128,
+          "maximum": 32768,
+          "markdownDescription": "Maximum tokens for model responses.",
+          "order": 7
         },
-        "openmetadataExplorer.llm.ollama.model": {
+        "openmetadataExplorer.llm.systemPrompt": {
           "type": "string",
-          "default": "llama2",
-          "description": "Ollama model name (llama2, mistral, codellama, etc.)"
+          "default": "You are a helpful AI assistant for analyzing data catalog metadata. Provide clear, concise insights about tables, columns, and data relationships.",
+          "markdownDescription": "System prompt sent to the LLM to define its behavior.",
+          "editPresentation": "multilineText",
+          "order": 8
         },
-        "openmetadataExplorer.llm.custom.endpoint": {
-          "type": "string",
-          "description": "Custom LLM API endpoint (OpenAI-compatible format)",
-          "default": ""
+        "openmetadataExplorer.llm.maxHistoryMessages": {
+          "type": "number",
+          "default": 50,
+          "minimum": 5,
+          "maximum": 200,
+          "markdownDescription": "Maximum number of messages to keep in conversation history.",
+          "order": 9
         },
-        "openmetadataExplorer.llm.custom.apiKey": {
-          "type": "string",
-          "description": "API key for custom endpoint (if required)",
-          "default": ""
-        },
-        "openmetadataExplorer.llm.custom.model": {
-          "type": "string",
-          "description": "Model name for custom endpoint",
-          "default": ""
+        "openmetadataExplorer.llm.requestTimeout": {
+          "type": "number",
+          "default": 120000,
+          "minimum": 10000,
+          "maximum": 600000,
+          "markdownDescription": "Request timeout in milliseconds (default: 120000 = 2 minutes).",
+          "order": 10
         }
       }
     },

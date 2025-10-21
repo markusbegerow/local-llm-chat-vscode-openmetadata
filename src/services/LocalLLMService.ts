@@ -5,6 +5,10 @@ interface LocalLLMConfig {
     endpoint: string;
     apiKey?: string;
     model?: string;
+    temperature?: number;
+    maxTokens?: number;
+    systemPrompt?: string;
+    requestTimeout?: number;
 }
 
 interface OpenAICompatibleMessage {
@@ -20,7 +24,7 @@ export class LocalLLMService {
     }
 
     async analyzeTable(tableMetadata: TableResult): Promise<string> {
-        const systemPrompt = 'You are a data engineering expert analyzing database tables. Provide concise, practical analysis.';
+        const systemPrompt = this.config.systemPrompt || 'You are a data engineering expert analyzing database tables. Provide concise, practical analysis.';
 
         const userPrompt = `
 Analyze this database table:
@@ -148,8 +152,8 @@ Be informative but concise - like an AI overview.
 
             const requestBody: any = {
                 messages: messages,
-                temperature: 0.7,
-                max_tokens: 1024
+                temperature: this.config.temperature ?? 0.7,
+                max_tokens: this.config.maxTokens ?? 1024
             };
 
             // Add model if specified
@@ -157,7 +161,8 @@ Be informative but concise - like an AI overview.
                 requestBody.model = this.config.model;
             }
 
-            const response = await axios.post(url, requestBody, { headers, timeout: 30000 });
+            const timeout = this.config.requestTimeout ?? 30000;
+            const response = await axios.post(url, requestBody, { headers, timeout });
 
             // Try OpenAI-compatible response format
             if (response.data?.choices?.[0]?.message?.content) {
@@ -213,7 +218,8 @@ Be informative but concise - like an AI overview.
                 payload.model = this.config.model;
             }
 
-            const response = await axios.post(this.config.endpoint, payload, { headers, timeout: 30000 });
+            const timeout = this.config.requestTimeout ?? 30000;
+            const response = await axios.post(this.config.endpoint, payload, { headers, timeout });
 
             // Try various response formats
             if (response.data) {

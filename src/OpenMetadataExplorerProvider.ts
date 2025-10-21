@@ -232,12 +232,14 @@ export class OpenMetadataExplorerProvider implements vscode.WebviewViewProvider 
         if (!this._view) return;
 
         const config = vscode.workspace.getConfiguration('openmetadataExplorer');
+        const llmConfig = this.llmService.getConfiguration();
         this._view.webview.postMessage({
             type: 'config',
             config: {
                 openmetadataUrl: config.get<string>('openmetadataUrl'),
                 hasAuthToken: !!config.get<string>('openmetadataAuthToken'),
-                llmProvider: this.llmService.getProvider(),
+                llmApiUrl: llmConfig.apiUrl,
+                llmModel: llmConfig.model,
                 llmConfigured: this.llmService.isConfigured()
             }
         });
